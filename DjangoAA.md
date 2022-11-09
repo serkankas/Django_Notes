@@ -255,3 +255,44 @@ NOTE: The CSS and JS part are written by one of my college [Enes Günaçtı](htt
 ```
 
 As you can see, the username and password data sended via __name__ attributes inside the tags.
+
+> Session Timeout and Expiration Browser
+
+Firslty, I am going to take a look at the [time-out](https://pypi.org/project/django-session-timeout/) for every user.
+
+```console
+(venv)$ pip install django-session-timeout
+```
+
+In __settings.py__
+```python
+MIDDLEWARE = [
+    # ...
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
+    # ...
+]
+
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_EXPIRE_SECONDS = 300                # In Second
+SESSION_TIMEOUT_REDIRECT = 'login'
+```
+
+This is overall settings for whole django web app. After we set that, we could add adinitional expiration if the browser closed without logged in as ___Remember Me___, it need to be logged in again. For that we need to check the [link](https://docs.djangoproject.com/en/4.1/topics/http/sessions/#django.contrib.sessions.backends.base.SessionBase.set_expiry).<br>
+Basically, I need to change two thing inside the __settings.py__. It's already comes with default, but it may not in your cases. Here's the configuration that you have to handle.
+
+```python
+MIDDLEWARE = [
+    # ...
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    # ...
+]
+
+INSTALLED_APPS = [
+    #...
+    'django.contrib.sessions',
+    #...
+]
+```
+
+If these lines aren't comes with default, you may need to migrate your project.
