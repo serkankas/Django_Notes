@@ -1,4 +1,4 @@
-[Link](https://www.youtube.com/watch?v=Yg5zkd9nm6w)
+The course explained in the [Link](https://www.youtube.com/watch?v=Yg5zkd9nm6w). However, it required privilage knowledge about Vue and Javascript. Since I don't have both of them, I'll skip to document this one for now. However, main idea behind is, accessing information via 
 
 * This course assume that we have basic knowledge about Vue. Might be an issue.
 
