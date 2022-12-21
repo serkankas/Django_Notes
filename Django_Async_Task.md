@@ -542,3 +542,73 @@ We activate this with __asgi.py__. So far, we handle every part related with bac
 ```
 
 The actual difference is now, I did change the chatSocket.onmessage function. Instead of adding data on top of previous datas, I set as whatever value comes with it. The reason behind that is, inside the __consumer.py__ I set my printLog file as sending all the file content inside the every each time. If I leave as it is, It will continue to put output at top of the log field. That's not we want it, that's why I change it.
+
+> Turning Celery with Redis
+
+There are slight changes with default Celery application, Now let's see what we did, and how we manage with it.
+
+First, we create Celery instance inside the __tasks.py__
+```python
+from __future__ import absolute_import, unicode_literals
+from celery import shared_task
+from time import sleep
+from random import randint
+
+@shared_task()
+def sleepSomeAmountOfTime():
+	for i in range(10):
+		temp_time = randint(0,5)
+		print(f'Going to sleep for {temp_time} second')
+		sleep(temp_time)
+
+	del temp_time
+	del i
+```
+
+__celery.py__
+```python
+from __future__ import absolute_import, unicode_literals
+import os
+from celery import Celery
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'website.settings')
+
+app = Celery('website')
+
+app.config_from_object('django.conf:settings', namespace='CELERY')
+
+app.autodiscover_tasks()
+
+```
+
+So far, we didn't change anything from the previous example. However, now since we are going to use redis, we will implement broker inside the settings.py
+
+addons in __settings.py__
+```python
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://localhost:6379")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://localhost:6379")
+```
+
+addition to that, in order to trigger our celery tasks, we will add two lines inside the __\_\_init\_\_.py__ (where the settings.py is located.)
+
+```python
+from .celery import app as celery_app
+__all__ = ("celery_app", )
+```
+
+From here, we can simply run as follow
+
+First bash
+```console
+(venv)$ celery -A <main_project_name> worker -l info
+```
+
+Second bash
+```console
+(venv)$ python manage.py shell
+>>> from <app_name>.tasks import <task_name>
+>>> <task_name>.delay()
+<AsyncResult: ...>
+```
+
+When you see the line comes with __\<AsyncResult: ...>__ it means it start to progress behind the worker. It means, at the same time you able to see your program running in first bash where you run the celery worker. 
