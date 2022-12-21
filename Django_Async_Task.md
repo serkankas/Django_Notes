@@ -612,3 +612,42 @@ Second bash
 ```
 
 When you see the line comes with __\<AsyncResult: ...>__ it means it start to progress behind the worker. It means, at the same time you able to see your program running in first bash where you run the celery worker. 
+
+> Manipulating Celery Application
+
+There are couple manipulation binded to celery app that you can access from Django Shell. In order to access that,
+
+```console
+(venv)$ python manage.py shell
+>>> from <project_name>.celery import app
+```
+
+After here, you could see the option in such. Here's the [link](https://docs.celeryq.dev/en/stable/reference/celery.app.control.html) that you can check the ```app.control``` api references. However, more api references can be found in this [link](https://docs.celeryq.dev/en/stable/reference/index.html)
+
+```python
+app.control.Mailbox(
+app.control.election(
+app.control.pool_shrink(
+app.control.add_consumer(
+app.control.enable_events(
+app.control.purge(
+app.control.app
+app.control.heartbeat(
+app.control.rate_limit(
+app.control.autoscale(
+app.control.inspect(
+app.control.revoke(
+app.control.broadcast(
+app.control.mailbox(
+app.control.shutdown(
+app.control.cancel_consumer(
+app.control.ping(
+app.control.terminate(
+app.control.disable_events(
+app.control.pool_grow(
+app.control.time_limit(
+app.control.discard_all(
+app.control.pool_restart( 
+```
+
+In short, we already saw that how we start the task, to kill it. You can kill via task_id ```app.control.terminate('<task_id>')```
