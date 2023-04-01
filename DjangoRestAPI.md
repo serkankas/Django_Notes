@@ -566,3 +566,7 @@ class StaffEditorPermissionMixin():
 
 with that applied to a folder, you can use your mixin while you creating your class like ```class RandomClassView(RandomMixin)```.
 Also, you can create variety mixin for other things as well like, querysets, serializer_classes, lookup_fields, etc.
+
+> ViewSet & Routers
+
+Let's think about creating some apis. For simple situation, we will create CRUD by ourselves. However, there is a shortcut (yet less optional) way to do it. Which is called ViewSet & Routers. The part start @3:14:00 - @3:26:00
