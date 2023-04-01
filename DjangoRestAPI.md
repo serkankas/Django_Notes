@@ -496,10 +496,57 @@ auth_token = requests.post(endpoint, json={'username': 'dummy', 'password' : pas
 print(auth_token.json())
 ```
 
+or alternatively,
+```python
+import requests
+from getpass import getpass
+
+auth_end_point = "http://localhost:8000/api/auth/"
+
+username = input("What is your Username:\n")
+password = getpass("What is your Password:\n")
+
+auth_token = requests.post(endpoint, json={'username': password, 'password' : password})
+print(auth_token.json())
+
+```
+
 The endpoint is clear, the sending data via ```json={}``` is clear. I believe everything is make clear now. The token access can be only possible with ___POST___ method of HTTP request.
 
-There is another way to make your token more secure (or it claims). However, I didn't find that much useful, if interested check in video between @2:52:00 - 2:56:00
+There is another way to make your token more secure (or it claims). However, I didn't find that much useful, if interested check in video between @2:52:00 - @2:56:00.
 
-___OQN___: The token doesn't have expiration by default. You may want to check that info as well. 2:57:00
+>> Okay now I will going to add couple word to this section because at that time I didn't quite get it. Since it's been a quite time for me to use JWT, I understand in much better way. We can change the Keyword for token. In my standard usage, JWT uses Bearer. That parts shows you that.
 
-Leaved at 2:59:00
+___OQN___: The token doesn't have expiration by default. You may want to check that info as well. @2:57:00
+
+<hr>
+
+Until that point, I was working at one virtual environment. However now, I am working from another computer. That's why do not follow this section as application. But you can follow for learning more.
+
+<hr>
+
+> Default Django Rest Framework Settings
+
+Here's the [link] of full documentation if you need it. We can put some default lists that contains some classes. With those, you can add default permission and/or authentication to your project if you want it too. In order to make that work, open your __\<project_folder>/<project_name>/<project_name>/settings.py__ and insert a dictionary like this.
+
+```python
+REST_FRAMEWORK = {
+	'DEFAULT_AUTHENTICATION_CLASSES': [
+		'rest_framework.authentication.SessionAuthentication',
+		'api.authentication.TokenAuthentication',
+	],
+	'DEFAULT_PERMISSION_CLASSES': [
+		'rest_framework.permission.IsAuthenticatedOrReadOnly'
+	]
+}
+```
+
+In order to import the classes, we are not going to import the module itself, ___but we will provide the path for it___. ~~I am not sure if I was following the course directly, but I am going to explain the codes like what I ment by them.~~ Let's dive into list of ```DEFAULT_AUTHENTICATION_CLASSES```.
+
+```python
+'DEFAULT_AUTHENTICATION_CLASSES' : [
+	#path_to_app. #path_to_python_file_name. #the_class/function_name
+]
+```
+
+So the structure of added/desired classes will be identified as such.
