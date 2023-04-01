@@ -550,3 +550,19 @@ In order to import the classes, we are not going to import the module itself, __
 ```
 
 So the structure of added/desired classes will be identified as such.
+
+> Using Mixins for Permissions
+
+In usage, let's assume that you mixed permission that you using for your application. For that, let's create related python file first.
+
+__\<application_name>/mixins.py__
+```python
+from rest_framework import permissions
+from .permissions import IsStaffEditorPermission
+
+class StaffEditorPermissionMixin():
+	permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
+```
+
+with that applied to a folder, you can use your mixin while you creating your class like ```class RandomClassView(RandomMixin)```.
+Also, you can create variety mixin for other things as well like, querysets, serializer_classes, lookup_fields, etc.
